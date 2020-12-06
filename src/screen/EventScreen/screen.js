@@ -21,6 +21,7 @@ const EventScreen = ({ navigation }) => {
 
     const { logOut } = React.useContext(AuthContext)
 
+
     React.useEffect(() => {
         configureGoogleSignIn()
     }, [])
