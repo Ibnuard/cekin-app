@@ -3,11 +3,12 @@ import { View, Text, StyleSheet, Dimensions, Animated, ScrollView } from 'react-
 import { Colors, Mixins } from '../../../styles'
 import SlidingPanel from 'react-native-sliding-up-down-panels'
 
-const SwipeableModal = ({ renderChild }) => {
+const SwipeableModal = ({ renderChild, allowDrag = true, allowAnimate = true }) => {
 
     return (
         <SlidingPanel
-            allowAnimation={true}
+            allowAnimation={allowAnimate}
+            allowDragging={allowDrag}
             useNativeDriver={true}
             headerLayoutHeight={Mixins.scaleSize(400)}
             slidingPanelLayoutHeight={Mixins.scaleSize(425)}

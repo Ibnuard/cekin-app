@@ -1,12 +1,8 @@
 import * as React from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList, StatusBar, Platform, Animated, ScrollView } from 'react-native'
 import TouchableText from '../../component/TouchableText/component'
-import AnimatedHeader from '../../component/AnimatedHaeder/component'
 import { defaultStyles } from '../../styles/DefaultText'
 import styles from './styles'
-
-
-//firebae
 import { GoogleSignin } from '@react-native-community/google-signin'
 import { AuthContext } from '../../services/Context'
 import { ReadDatabase, WEB_CLIENT_ID } from '../../services/Firebase'
@@ -18,12 +14,14 @@ import { fetchData } from '../../api/apiUtils'
 import { GetDataByHash } from '../../api/api'
 import SwipeableModal from '../../component/Modal/SwipeableModal/component'
 import { Colors } from '../../styles'
+import _ from 'lodash'
+import Spinner from '../../component/Spinner/component'
 
 const DailyScreen = ({ navigation }) => {
     const [indicator, showIndicator] = React.useState(false)
     const [name, setName] = React.useState('...')
     const [data, setData] = React.useState([])
-
+    const [dataState, setDataState] = React.useState('init')
     const user = auth().currentUser
     const hash = stringToMD5(user.email)
 
@@ -38,6 +36,7 @@ const DailyScreen = ({ navigation }) => {
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             console.log('refresh')
+            setDataState('init')
             getUserName()
             getData()
         });
@@ -48,14 +47,18 @@ const DailyScreen = ({ navigation }) => {
     async function getData() {
         fetchData(GetDataByHash(hash), 'GET', null, 10000, (res) => {
             if (res.result && !res.error) {
-                setData(res.result)
+                const absenData = res.result
+                _.isEmpty(absenData) ? setDataState('nodata') : setDataState('data')
+                setData(_.reverse(absenData))
             }
         })
     }
 
     async function getUserName() {
         console.log('get name from db')
-        await ReadDatabase(`/Root/Users/${hash}/name/`, (value) => setName(value), error => console.log('error ' + error))
+        await ReadDatabase(`/Root/Users/${hash}/name/`, (value) => {
+            value.length > 12 ? setName(`${value.substring(0, 12)}...`) : setName(value)
+        }, error => console.log('error ' + error))
     }
 
     function configureGoogleSignIn() {
@@ -80,19 +83,18 @@ const DailyScreen = ({ navigation }) => {
         return (
             <>
                 <StatusBar backgroundColor={Colors.COLOR_RED} barStyle={'light-content'} />
-                <Image source={IMAGES.header0} style={styles.bgImage} resizeMode={'cover'} />
                 <View style={styles.header}>
                     <View style={styles.leftContainer}>
                         <View style={styles.leftGroup}>
                             <View style={styles.profileImage}>
                                 <Image source={{ uri: user?.photoURL }} style={styles.images} />
                             </View>
-                            <Text style={[defaultStyles.textNormalDefault, styles.nameText]}>Halo, {name}</Text>
+                            <Text numberOfLines={1} style={[defaultStyles.textNormalDefault, styles.nameText]}>Halo, {name}</Text>
                         </View>
                     </View>
                     <TouchableText text={'Keluar'} textstyle={styles.logoutText} onPress={() => signOut().then(() => logOut())} />
                 </View>
-                <TouchableOpacity style={styles.buttonContainer} activeOpacity={.6} onPress={() => name ? navigation.navigate('Absen', { name: name, hash: hash }) : null}>
+                <TouchableOpacity style={styles.buttonContainer} activeOpacity={.9} onPress={() => name ? navigation.navigate('Absen', { name: name, hash: hash }) : null}>
                     <View style={styles.listImagePlusContainer}>
                         <Text style={[styles.fabText, defaultStyles.textBold, defaultStyles.textLargeDefault]}>+</Text>
                     </View>
@@ -108,7 +110,7 @@ const DailyScreen = ({ navigation }) => {
 
         const renderItem = ({ item }) => {
             return (
-                <TouchableOpacity style={styles.listContainer} activeOpacity={.6} onPress={() => name ? navigation.navigate('Detail',{ name: name, id: item.id, date: item.datetime}): null}>
+                <TouchableOpacity style={styles.listContainer} activeOpacity={.6} onPress={() => name ? navigation.navigate('Detail', { name: name, id: item.id, date: item.datetime }) : null}>
                     <View style={styles.listImageContainer} />
                     <View style={styles.listInfo}>
                         <Text style={[defaultStyles.textNormalDefault, defaultStyles.textBold]}>{item.name}</Text>
@@ -135,9 +137,40 @@ const DailyScreen = ({ navigation }) => {
         )
     }
 
+    function renderNoItem() {
+        return <View style={styles.noDataContainer}>
+            <Text style={[defaultStyles.textLargeDefault, defaultStyles.textBold, styles.noDataText]}>Belum ada data absen</Text>
+        </View>
+    }
+
+    function renderSpinner() {
+        return (
+            <View style={styles.noDataContainer}>
+                <Spinner />
+            </View>
+        )
+    }
+
+    function contentSelector() {
+        switch (dataState) {
+            case 'init':
+                return renderSpinner()
+                break
+            case 'data':
+                return renderList()
+                break
+            case 'nodata':
+                return renderNoItem()
+                break
+            default:
+                return renderSpinner()
+                break
+        }
+    }
+
     function renderSwipeableModal() {
         return (
-            <SwipeableModal renderChild={() => renderList()} />
+            <SwipeableModal allowDrag={!_.isEmpty(data)} allowAnimate={!_.isEmpty(data)} renderChild={() => contentSelector()} />
         )
     }
 

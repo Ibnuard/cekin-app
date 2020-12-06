@@ -2,10 +2,10 @@ import { StyleSheet } from 'react-native'
 import { Colors, Mixins } from '../../styles'
 
 const styles = StyleSheet.create({
-    container:{
-        flex : 1,
-        backgroundColor : Colors.COLOR_WHITE,
-        padding : Mixins.scaleSize(24)
+    container: {
+        flex: 1,
+        backgroundColor: Colors.COLOR_WHITE,
+        padding: Mixins.scaleSize(24)
     },
     images: {
         flex: 1,
@@ -16,8 +16,6 @@ const styles = StyleSheet.create({
         borderRadius: Mixins.scaleSize(20),
         marginBottom: Mixins.scaleSize(24),
         backgroundColor: Colors.COLOR_GRAY,
-        borderWidth: 1,
-        borderColor: Colors.COLOR_RED
     },
 
     textValue: {
