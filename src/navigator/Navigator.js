@@ -19,7 +19,6 @@ const Tab = createBottomTabNavigator()
 export const SplashStack = () => {
     return (
         <Stack.Navigator initialRouteName={'Splash'}>
-            
             <Stack.Screen
                 name='Splash'
                 component={SplashScreen}
@@ -65,6 +64,7 @@ export const HomeStack = () => {
         </Stack.Navigator>
     )
 }
+
 
 export const HomeTabStack = () => {
     return (
@@ -130,19 +130,19 @@ export const DailyStack = () => {
                     title: 'Detail Absen',
                     headerShown: true,
                     animationEnabled: false,
-                }}/>
+                }} />
         </Stack.Navigator>
     )
 }
 export const EventStack = () => {
-    return(
+    return (
         <Stack.Navigator>
             <Stack.Screen
-            name = 'Event'
-            component= {EventScreen}
-            options={{
-                headerShown: false,
-            }}/>
+                name='Event'
+                component={EventScreen}
+                options={{
+                    headerShown: false,
+                }} />
             <Stack.Screen
                 name='Absen'
                 component={AbsenScreen}
@@ -150,7 +150,8 @@ export const EventStack = () => {
                     title: 'Buat Absen',
                     headerShown: true,
                     animationEnabled: false,
-            }} />
+                }} />
         </Stack.Navigator>
     )
 }
+
