@@ -43,6 +43,10 @@ const styles = StyleSheet.create({
 
     bottom: {
         marginVertical: Mixins.scaleSize(24)
+    },
+
+    longInput: {
+        height: Mixins.scaleSize(72)
     }
 })
 

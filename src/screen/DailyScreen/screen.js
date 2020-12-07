@@ -8,20 +8,25 @@ import { AuthContext } from '../../services/Context'
 import { ReadDatabase, WEB_CLIENT_ID } from '../../services/Firebase'
 import auth from '@react-native-firebase/auth'
 import Indicator from '../../component/Modal/Indicator/component'
-import { parseNumberDateTime, stringToMD5 } from '../../utlis/Utils'
+import { getLocaleDate, parseNumberDateTime, stringToMD5 } from '../../utlis/Utils'
 import { IMAGES } from '../../styles/Images'
 import { fetchData } from '../../api/apiUtils'
-import { GetDataByHash } from '../../api/api'
+import { GetDataByHash, IsTodayAbsen } from '../../api/api'
 import SwipeableModal from '../../component/Modal/SwipeableModal/component'
 import { Colors } from '../../styles'
 import _ from 'lodash'
 import Spinner from '../../component/Spinner/component'
+
+import ModalSelector from '../../component/Modal/component'
 
 const DailyScreen = ({ navigation }) => {
     const [indicator, showIndicator] = React.useState(false)
     const [name, setName] = React.useState('...')
     const [data, setData] = React.useState([])
     const [dataState, setDataState] = React.useState('init')
+    const [modalIndicator, showModalIndicator] = React.useState(false)
+    const [modalMessage, setModalMessage] = React.useState('')
+    const [type, setModalType] = React.useState('loading')
     const user = auth().currentUser
     const hash = stringToMD5(user.email)
 
@@ -50,6 +55,20 @@ const DailyScreen = ({ navigation }) => {
                 const absenData = res.result
                 _.isEmpty(absenData) ? setDataState('nodata') : setDataState('data')
                 setData(_.reverse(absenData))
+            }
+        })
+    }
+
+    async function checkTodayAbsen() {
+        setModalType('loading')
+        showModalIndicator(true)
+        const datehash = stringToMD5(hash + getLocaleDate())
+        fetchData(IsTodayAbsen(datehash), 'GET', null, 10000, (res) => {
+            if (res) {
+                res.result ? (
+                    setModalMessage('Anda sudah absen hari ini.'),
+                    setModalType('popup')
+                ) : (showModalIndicator(false), navigation.navigate('Absen', { name: name, hash: hash }))
             }
         })
     }
@@ -94,7 +113,7 @@ const DailyScreen = ({ navigation }) => {
                     </View>
                     <TouchableText text={'Keluar'} textstyle={styles.logoutText} onPress={() => signOut().then(() => logOut())} />
                 </View>
-                <TouchableOpacity style={styles.buttonContainer} activeOpacity={.9} onPress={() => name ? navigation.navigate('Absen', { name: name, hash: hash }) : null}>
+                <TouchableOpacity style={styles.buttonContainer} activeOpacity={.9} onPress={() => name ? checkTodayAbsen() : null}>
                     <View style={styles.listImagePlusContainer}>
                         <Text style={[styles.fabText, defaultStyles.textBold, defaultStyles.textLargeDefault]}>+</Text>
                     </View>
@@ -178,11 +197,16 @@ const DailyScreen = ({ navigation }) => {
         return <Indicator visible={indicator} />
     }
 
+    const RenderModalSelector = () => {
+        return <ModalSelector visible={modalIndicator} type={type} message={modalMessage} onDurationEnd={() => showModalIndicator(false)} />
+    }
+
     return (
         <View style={styles.container}>
             {renderTopContainer()}
             {renderSwipeableModal()}
             {IndicatorModal()}
+            {RenderModalSelector()}
         </View>
     )
 }

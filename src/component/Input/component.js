@@ -16,7 +16,8 @@ const Input = ({
     isError,
     errorMessage = 'error massage here',
     onBlur,
-    editable
+    editable,
+    multiline
 }) => {
     const [state, setState] = React.useState('blur')
 
@@ -31,6 +32,7 @@ const Input = ({
                 secureTextEntry={hidePassword}
                 keyboardType={keyboardType}
                 returnKeyType={returnKeyType}
+                multiline={multiline}
                 maxLength={maxLength}
                 onChangeText={onChangeText}
                 value={value}
