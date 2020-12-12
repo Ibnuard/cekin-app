@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: Typography.FONT_NUNITO_REGULAR,
-        fontWeight: 'normal'
+        fontWeight: 'normal',
     },
-    
+
 })
 
 export default styles

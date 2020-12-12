@@ -5,6 +5,7 @@ import { Colors, Mixins } from '../../styles'
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Colors.COLOR_RED
     },
 
     header: {
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
     list: {
         backgroundColor: Colors.COLOR_WHITE,
         paddingTop: Mixins.scaleSize(14),
-        paddingBottom: Mixins.scaleSize(350)
+        paddingBottom: Mixins.scaleSize(380)
     },
 
     listInfo: {
@@ -149,7 +150,17 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: Dimensions.get('window').width,
         height: '100%'
-    }
+    },
+
+    noDataContainer: {
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: Mixins.scaleSize(160)
+    },
+
+    noDataText: {
+        color: Colors.COLOR_DARK_GRAY
+    },
 })
 
 export default styles

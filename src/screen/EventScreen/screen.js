@@ -16,6 +16,7 @@ import PopUp from '../../component/Modal/PopUp/component'
 const EventScreen = ({ navigation }) => {
     const [indicator, showIndicator] = React.useState(false)
     const [popup, showPopup] = React.useState(false)
+    //
 
     const user = auth().currentUser
 

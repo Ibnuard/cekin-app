@@ -24,7 +24,7 @@ const DetailScreen = ({ navigation, route }) => {
         fetchData(GetDetailDatabyId(route.params.id), 'GET', null, 10000, (res) => {
             if (res.result && !res.error) {
                 setData(res.result[0].photo)
-                console.log(res.result[0].photo);
+                //console.log(res.result[0].photo);
             }
         })
     }
@@ -37,12 +37,16 @@ const DetailScreen = ({ navigation, route }) => {
         {
             title: 'Tanggal Absensi',
             value: parseNumberDateTime(route.params.date).date
-        }
+        },
+        {
+            title: 'Waktu Absensi',
+            value: parseNumberDateTime(route.params.date).time
+        },
     ]
 
-    function renderPhotoContainer(){
-        var base64Pict = data
-        return base64Pict ? <Image source={{uri: `data:image/png;base64,${base64Pict}`}} style={styles.images} /> : <View style={styles.images}>
+    function renderPhotoContainer() {
+        let base64Pict = data
+        return base64Pict ? <Image source={{ uri: `data:image/png;base64,${base64Pict}` }} style={styles.images} /> : <View style={styles.images}>
             <Text style={styles.textRed}>Image not found</Text>
         </View>
     }

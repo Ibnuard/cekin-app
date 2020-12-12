@@ -8,23 +8,36 @@ import Geolocation from '@react-native-community/geolocation'
 import styles from './styles'
 import { cameraLaunchChangePicture } from '../../component/SelfieCapture/component'
 import { Mixins } from '../../styles'
-import { fetchData } from '../../api/apiUtils'
-import { WriteDataToDaily } from '../../api/api'
+import { fetchData, fetchDataUniversal } from '../../api/apiUtils'
+import { GET_USER_LOCATION, WriteDataToDaily } from '../../api/api'
 
 import ModalSelector from '../../component/Modal/component'
 
 const AbsenScreen = ({ navigation, route }) => {
     const [imageSelfie, setImageSelfie] = React.useState()
-    const [position, setPosition] = React.useState({ latitude: null, longitude: null })
+    const [position, setPosition] = React.useState('')
     const [indicator, showIndicator] = React.useState(false)
     const [modalMessage, setModalMessage] = React.useState('')
     const [type, setModalType] = React.useState('loading')
 
     React.useEffect(() => {
         Geolocation.getCurrentPosition(info => {
-            setPosition({ latitude: info.coords.latitude, longitude: info.coords.longitude })
+            getLocationName(info.coords.latitude, info.coords.longitude)
+        }, error => {
+            console.log(error)
+        }, {
+            enableHighAccuracy: true
         })
     }, [])
+
+    function getLocationName(lat, long) {
+        console.log(lat, long)
+        fetchDataUniversal(GET_USER_LOCATION(lat, long), 'GET', {}, 12000, (res) => {
+            if (res) {
+                setPosition(res.result.display_name)
+            }
+        })
+    }
 
     const config_display = [
         {
@@ -32,9 +45,14 @@ const AbsenScreen = ({ navigation, route }) => {
             value: route.params.name
         },
         {
+            title: 'Lokasi Absensi',
+            value: position,
+            multiline: true
+        },
+        {
             title: 'Tanggal Absensi',
             value: getLocaleDate()
-        }
+        },
     ]
 
     async function getSelfieImage() {
@@ -60,8 +78,7 @@ const AbsenScreen = ({ navigation, route }) => {
         const data = {
             name: name,
             datetime: numberdatetime,
-            longitude: location.longitude,
-            latitude: location.latitude,
+            location: location,
             photo: img,
             hash: hash,
             datehash: dateHash
@@ -86,7 +103,7 @@ const AbsenScreen = ({ navigation, route }) => {
                 return (
                     <View key={index} style={styles.topContainer}>
                         <Text style={[defaultStyles.textNormalDefault, styles.textDesc]}>{item.title}</Text>
-                        <Input value={item.value} editable={false} style={[defaultStyles.textNormalDefault, styles.textValue]} />
+                        <Input multiline={item.multiline} value={item.value} editable={false} style={[item.multiline ? styles.longInput : null, defaultStyles.textNormalDefault, styles.textValue]} />
                     </View>
                 )
             })
