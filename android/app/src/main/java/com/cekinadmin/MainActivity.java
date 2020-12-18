@@ -1,4 +1,4 @@
-package com.cekin;
+package com.cekinadmin;
 
 import com.facebook.react.ReactActivity;
 

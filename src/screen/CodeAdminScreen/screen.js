@@ -1,16 +1,16 @@
 import * as React from 'react';
-import {View, Text, Image, StatusBar} from 'react-native';
+import { View, Text, Image, StatusBar } from 'react-native';
 import Input from '../../component/Input/component';
-import {Colors} from '../../styles';
-import {defaultStyles} from '../../styles/DefaultText';
-import {IMAGES} from '../../styles/Images';
+import { Colors } from '../../styles';
+import { defaultStyles } from '../../styles/DefaultText';
+import { IMAGES } from '../../styles/Images';
 import styles from './styles';
 import TouchableText from '../../component/TouchableText/component';
 
 //firebase
-import {GoogleSignin} from '@react-native-community/google-signin';
+import { GoogleSignin } from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
-import {AuthContext} from '../../services/Context';
+import { AuthContext } from '../../services/Context';
 
 //firebase
 import Indicator from '../../component/Modal/Indicator/component';
@@ -19,11 +19,11 @@ import {
   WEB_CLIENT_ID,
   WriteToDatabase,
 } from '../../services/Firebase';
-import {stringToMD5} from '../../utlis/Utils';
+import { stringToMD5 } from '../../utlis/Utils';
 import Button from '../../component/Button/component';
 
-const CodeAdminScreen = ({navigation}) => {
-  const {logIn} = React.useContext(AuthContext);
+const CodeAdminScreen = ({ navigation }) => {
+  const { logIn } = React.useContext(AuthContext);
 
   // const [indicator, showIndicator] = React.useState(false);
 
@@ -104,7 +104,7 @@ const CodeAdminScreen = ({navigation}) => {
   };
 
   const goDailyAbsen = () => {
-    navigation.navigate('DailyAbsen');
+    navigation.navigate('AdminHome');
   };
 
   const ButtonContainer = () => {

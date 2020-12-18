@@ -131,7 +131,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.cekin"
+        applicationId "com.cekinadmin"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

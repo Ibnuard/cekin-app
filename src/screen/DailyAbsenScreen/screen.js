@@ -4,54 +4,23 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  FlatList,
   StatusBar,
-  Platform,
-  Animated,
-  ScrollView,
-  Alert,
 } from 'react-native';
 import TouchableText from '../../component/TouchableText/component';
-import {defaultStyles} from '../../styles/DefaultText';
+import { defaultStyles } from '../../styles/DefaultText';
 import styles from './styles';
-import {GoogleSignin} from '@react-native-community/google-signin';
-import {AuthContext} from '../../services/Context';
-import {ReadDatabase, WEB_CLIENT_ID} from '../../services/Firebase';
-import auth from '@react-native-firebase/auth';
 import Indicator from '../../component/Modal/Indicator/component';
-import {
-  getLocaleDate,
-  parseNumberDateTime,
-  stringToMD5,
-} from '../../utlis/Utils';
-import {IMAGES} from '../../styles/Images';
-import {fetchData} from '../../api/apiUtils';
-import {GetDataByHash, IsTodayAbsen} from '../../api/api';
-import SwipeableModal from '../../component/Modal/SwipeableModal/component';
-import {Colors} from '../../styles';
+import { IMAGES } from '../../styles/Images';
+import { Colors } from '../../styles';
 import _ from 'lodash';
 import Spinner from '../../component/Spinner/component';
 
 import ModalSelector from '../../component/Modal/component';
 
-const DailyAbsenScreen = ({navigation}) => {
-  const user = auth().currentUser;
-  const hash = stringToMD5(user.email);
-
-  const offset = React.useRef(new Animated.Value(0)).current;
-
-  const {logOut} = React.useContext(AuthContext);
-
-  React.useEffect(() => {
-    // configureGoogleSignIn();
-  }, []);
-
+const DailyAbsenScreen = ({ navigation }) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('refresh');
-      // setDataState('init');
-      // getUserName();
-      // getData();
     });
 
     return unsubscribe;
@@ -64,7 +33,7 @@ const DailyAbsenScreen = ({navigation}) => {
           backgroundColor={Colors.COLOR_RED}
           barStyle={'light-content'}
         />
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <View style={styles.leftContainer}>
             <View style={styles.leftGroup}>
               <Text
@@ -83,7 +52,7 @@ const DailyAbsenScreen = ({navigation}) => {
             textstyle={[defaultStyles.textLargeDefault, styles.logoutText]}
             onPress={() => navigation.navigate('CodeAdmin')}
           />
-        </View>
+              </View>*/}
       </>
     );
   }
