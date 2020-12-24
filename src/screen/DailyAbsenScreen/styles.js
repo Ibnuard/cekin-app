@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.COLOR_WHITE,
-    marginVertical: Mixins.scaleSize(8),
+    marginTop: Mixins.scaleSize(15),
     marginHorizontal: Mixins.scaleSize(24),
     borderRadius: 6,
     elevation: 2.5,

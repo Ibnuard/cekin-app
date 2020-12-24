@@ -1,13 +1,11 @@
-import * as React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { AuthContext } from './services/Context'
-import { AuthStack, HomeStack, SplashStack } from './navigator/Navigator';
+import * as React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {AuthContext} from './services/Context';
+import {AuthStack, HomeStack, SplashStack} from './navigator/Navigator';
 //Firebase
 
 //Firebase Analytics
 //import firebase from 'react-native-firebase'
-
-
 
 const AppStack = () => {
   //FirebaseService.useCallPermission()
@@ -19,40 +17,43 @@ const AppStack = () => {
           return {
             ...prevState,
             token: null,
-            isLoading: false
-          }
+            isLoading: false,
+          };
         case 'SIGN_IN':
           return {
             ...prevState,
             token: 'token2020',
-            isLoading: false
-          }
+            isLoading: false,
+          };
       }
     },
     {
       token: null,
-      isLoading: true
-    }
-  )
+      isLoading: true,
+    },
+  );
 
-  const authContext = React.useMemo(() => ({
-    logOut: () => dispatch({ type: 'LOG_OUT' }),
-    logIn: () => dispatch({ type: 'SIGN_IN' }),
-  }), [])
+  const authContext = React.useMemo(
+    () => ({
+      logOut: () => dispatch({type: 'LOG_OUT'}),
+      logIn: () => dispatch({type: 'SIGN_IN'}),
+    }),
+    [],
+  );
 
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {
-          state.isLoading ? <SplashStack /> : (
-            state.token !== null
-              ? <HomeStack />
-              : <AuthStack />
-          )
-        }
+        {state.isLoading ? (
+          <SplashStack />
+        ) : state.token !== null ? (
+          <HomeStack />
+        ) : (
+          <AuthStack />
+        )}
       </NavigationContainer>
     </AuthContext.Provider>
   );
 };
 
-export default AppStack
+export default AppStack;

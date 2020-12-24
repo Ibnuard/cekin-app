@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../screen/HomeScreen/screen';
 import SplashScreen from '../screen/SplashScreen/screen';
 import SigninGoogleScreen from '../screen/SigninGoogleScreen/screen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { TabIconDaily, TabIconEvent } from '../component/TabIcon/TabIcon';
-import { Colors, Typography } from '../styles';
-import { getIsTabBarVisible } from '../utlis/Utils';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {TabIconDaily, TabIconEvent} from '../component/TabIcon/TabIcon';
+import {Colors, Typography} from '../styles';
+import {getIsTabBarVisible} from '../utlis/Utils';
 import DailyScreen from '../screen/DailyScreen/screen';
 import EventScreen from '../screen/EventScreen/screen';
 import AbsenScreen from '../screen/AbsenScreen/screen';
@@ -17,11 +17,11 @@ import CodeAdminScreen from '../screen/CodeAdminScreen/screen';
 import DailyAbsenScreen from '../screen/DailyAbsenScreen/screen';
 import DetailDailyAbsenScreen from '../screen/DetailDailyAbsenScreen/screen';
 import AdminHome from '../screen/AdminHome/screen';
-import CustomTabBar from '../component/CustomTabBar/component';
+import CustomHeader from '../component/CustomHeader/component';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const TabBar = createMaterialTopTabNavigator()
+const TabBar = createMaterialTopTabNavigator();
 
 export const SplashStack = () => {
   return (
@@ -74,7 +74,7 @@ export const HomeStack = () => {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={({ route }) => ({
+        options={({route}) => ({
           headerShown: false,
           animationEnabled: false,
         })}
@@ -88,7 +88,7 @@ export const HomeTabStack = () => {
     <Tab.Navigator
       initialRouteName={'Daily'}
       tabBar={(props) => <BottomTab {...props} />}
-      screenOptions={({ route }) => ({
+      screenOptions={({route}) => ({
         tabBarVisible: getIsTabBarVisible(route),
       })}
       backBehavior={'initialRoute'}
@@ -105,7 +105,7 @@ export const HomeTabStack = () => {
         name="DailyStack"
         component={DailyStack}
         options={{
-          tabBarIcon: ({ focused }) => <TabIconDaily focused={focused} />,
+          tabBarIcon: ({focused}) => <TabIconDaily focused={focused} />,
           tabBarLabel: 'Harian',
         }}
       />
@@ -113,7 +113,7 @@ export const HomeTabStack = () => {
         name="EventStack"
         component={EventStack}
         options={{
-          tabBarIcon: ({ focused }) => <TabIconEvent focused={focused} />,
+          tabBarIcon: ({focused}) => <TabIconEvent focused={focused} />,
           tabBarLabel: 'Acara',
         }}
       />
@@ -198,26 +198,27 @@ export const DailyAbsenStack = () => {
   );
 };
 
-export const CreateTabBar = ({ config = [] }) => {
+export const CreateTabBar = ({config = []}) => {
   return (
-    <TabBar.Navigator tabBar={props => <CustomTabBar {...props} />}>
-      {
-        config.map((item, index) => {
-          return (
-            <TabBar.Screen
-              name={item?.name}
-              key={index + 1}
-              component={item?.component}
-              options={{
-                title: item?.title
-              }} />
-          )
-        })
-      }
+    <TabBar.Navigator
+      initialRouteName={'DailyAbsen'}
+      tabBar={(props) => <CustomHeader {...props} />}
+      screenOptions={({route}) => ({
+        tabBarVisible: getIsTabBarVisible(route),
+      })}
+      backBehavior={'initialRoute'}>
+      {config.map((item, index) => {
+        return (
+          <TabBar.Screen
+            name={item?.name}
+            key={index + 1}
+            component={item?.component}
+            options={{
+              title: item?.title,
+            }}
+          />
+        );
+      })}
     </TabBar.Navigator>
-  )
-}
-
-
-
-
+  );
+};

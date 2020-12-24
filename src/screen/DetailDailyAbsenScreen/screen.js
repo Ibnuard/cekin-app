@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import * as React from 'react';
 import {View, ScrollView, Text, Image} from 'react-native';
 import {defaultStyles} from '../../styles/DefaultText';

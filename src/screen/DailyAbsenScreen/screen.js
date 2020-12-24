@@ -1,23 +1,14 @@
 import * as React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
+import {View, Text, Image, TouchableOpacity, StatusBar} from 'react-native';
 import TouchableText from '../../component/TouchableText/component';
-import { defaultStyles } from '../../styles/DefaultText';
+import {defaultStyles} from '../../styles/DefaultText';
 import styles from './styles';
 import Indicator from '../../component/Modal/Indicator/component';
-import { IMAGES } from '../../styles/Images';
-import { Colors } from '../../styles';
+import {IMAGES} from '../../styles/Images';
+import {Colors} from '../../styles';
 import _ from 'lodash';
-import Spinner from '../../component/Spinner/component';
 
-import ModalSelector from '../../component/Modal/component';
-
-const DailyAbsenScreen = ({ navigation }) => {
+const DailyAbsenScreen = ({navigation}) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('refresh');
@@ -33,26 +24,6 @@ const DailyAbsenScreen = ({ navigation }) => {
           backgroundColor={Colors.COLOR_RED}
           barStyle={'light-content'}
         />
-        {/* <View style={styles.header}>
-          <View style={styles.leftContainer}>
-            <View style={styles.leftGroup}>
-              <Text
-                numberOfLines={1}
-                style={[
-                  defaultStyles.textBold,
-                  defaultStyles.textLargeDefault,
-                  styles.nameText,
-                ]}>
-                Admin
-              </Text>
-            </View>
-          </View>
-          <TouchableText
-            text={'Keluar'}
-            textstyle={[defaultStyles.textLargeDefault, styles.logoutText]}
-            onPress={() => navigation.navigate('CodeAdmin')}
-          />
-              </View>*/}
       </>
     );
   }
@@ -88,6 +59,8 @@ const DailyAbsenScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {renderTopContainer()}
+      {renderList()}
+      {renderList()}
       {renderList()}
     </View>
   );
