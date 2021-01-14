@@ -8,7 +8,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: Mixins.scaleSize(14),
     paddingVertical: Mixins.scaleSize(8),
     height: Mixins.scaleSize(58),
-    elevation: 3,
+    // elevation: 3,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.COLOR_LIGHT_GRAY,
   },
 
   tabContainer: {
@@ -34,6 +36,34 @@ const styles = StyleSheet.create({
   textNormal: {
     color: Colors.COLOR_DARK_GRAY,
     fontWeight: '500',
+  },
+
+  header: {
+    backgroundColor: Colors.COLOR_WHITE,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: Mixins.scaleSize(8),
+    borderWidth: 0,
+  },
+
+  leftGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: Mixins.scaleSize(14),
+    borderRadius: Mixins.scaleSize(24),
+  },
+
+  leftContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  logoutText: {
+    paddingVertical: Mixins.scaleSize(18),
+    paddingHorizontal: Mixins.scaleSize(15),
+    borderRadius: Mixins.scaleSize(32),
+    color: Colors.COLOR_RED,
   },
 });
 
